@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteRequest, getRequest } from "../Utils";
+import { deleteRequest, getRequest, postRequest } from "../Utils";
 
 
 const endpoint = `https://express-server.hyderion.com`
@@ -69,7 +69,7 @@ const UserList = () => {
             userStatus: userStatus
         }
 
-        console.log(newUser);
+        postRequest(`${endpoint}/api/users/add`, JSON.stringify(newUser));
 
     }
 
