@@ -44,7 +44,7 @@ const UserList = () => {
 
     useEffect(() => {
         
-        getRequest(`${endpoint}/users`)
+        getRequest(`${endpoint}/api/users`)
             .then((response: any) => {
                 console.log(response);
                 setUsers(response);
@@ -100,7 +100,7 @@ const UserList = () => {
 
 
                 {
-                    users.map((user: any, index: number) => {
+                    users && users.map((user: any, index: number) => {
                         return (
                             <tr className="text-center" key={index}>
                                 <td className="">{ user.firstName }</td>
