@@ -23,10 +23,10 @@ const UserList = () => {
     const [users, setUsers]: any = useState([]);
     const [reload, setReload]: any = useState(false);
 
-    const [fName, setFName]: any = useState();
-    const [lName, setLName]: any = useState();
-    const [email, setEmail]: any = useState();
-    const [password, setPassword]: any = useState();
+    const [fName, setFName]: any = useState('');
+    const [lName, setLName]: any = useState('');
+    const [email, setEmail]: any = useState('');
+    const [password, setPassword]: any = useState('');
     const [userStatus, setUserStatus]: any = useState('user');
 
 
@@ -47,9 +47,9 @@ const UserList = () => {
         getRequest(`${endpoint}/api/users`)
             .then((response: any) => {
                 console.log(response);
-                setUsers(response);
+                setUsers(response.users);
             })
-    }, [])
+    }, [reload])
 
 
 
@@ -59,7 +59,7 @@ const UserList = () => {
 
 
 
-    const addUser = () => {
+    const addUser = async () => {
 
         const newUser = {
             firstName: fName,
@@ -69,7 +69,13 @@ const UserList = () => {
             userStatus: userStatus
         }
 
-        postRequest(`${endpoint}/api/users/add`, JSON.stringify(newUser));
+        await postRequest(`${endpoint}/api/users/add`, JSON.stringify(newUser));
+        setReload(!reload);
+
+        setFName('');
+        setLName('');
+        setEmail('');
+        setPassword('');
 
     }
 
@@ -77,7 +83,7 @@ const UserList = () => {
     const deleteUser = async (id: number) => {
         console.log(id);
 
-        const response = await deleteRequest(`${endpoint}/users/delete`, id);
+        const response = await deleteRequest(`${endpoint}/api/users/delete`, id);
         console.log(response);
         setReload(!reload);
     }
@@ -106,10 +112,10 @@ const UserList = () => {
                                 <td className="">{ user.firstName }</td>
                                 <td className="">{ user.lastName }</td>
                                 <td className="">{ user.email }</td>
-                                <td className="">{ user.encryptedPassword }</td>
+                                <td className="">{ user.password }</td>
                                 <td className="">{ user.userStatus }</td>
                                 <td className="">
-                                    <button className="btn btn-danger" onClick={() => deleteUser(user.id)}>Delete</button>
+                                    <button className="btn btn-danger" onClick={() => deleteUser(user._id)}>Delete</button>
                                 </td>
                             </tr>
                         );
@@ -119,19 +125,19 @@ const UserList = () => {
 
                     <tr className="text-center">
                         <td className="">
-                            <input className="text-center p-3 w-100" type="text" onChange={handleChange} name="fName" />
+                            <input className="text-center p-3 w-100" type="text" onChange={handleChange} value={fName} name="fName" />
                         </td>
 
                         <td className="">
-                            <input className="text-center p-3 w-100" type="text" onChange={handleChange} name="lName" />
+                            <input className="text-center p-3 w-100" type="text" onChange={handleChange} value={lName} name="lName" />
                         </td>
 
                         <td className="">
-                            <input className="text-center p-3 w-100" type="text" onChange={handleChange} name="email" />
+                            <input className="text-center p-3 w-100" type="text" onChange={handleChange} value={email} name="email" />
                         </td>
 
                         <td className="">
-                            <input className="text-center p-3 w-100" type="text" onChange={handleChange} name="password" />
+                            <input className="text-center p-3 w-100" type="password" onChange={handleChange} value={password} name="password" />
                         </td>
 
                         <td className="">

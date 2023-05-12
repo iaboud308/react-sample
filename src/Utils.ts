@@ -57,7 +57,7 @@ const postRequest = async (endpoint: string, body: any) => {
         if (response.status == 400) {
             throw new Error("Bad Request");
         }
-        return await response.json();
+        return await response.text();
 
     } catch (ex) {
         console.log(ex);
@@ -101,9 +101,9 @@ const deleteRequest = async (endpoint: string, id: number) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(id)
+            body: JSON.stringify({id: id})
         })
-        const jsonResponse = response.json();
+        const jsonResponse = response.text();
         return jsonResponse;
     } catch (ex) {
         console.log(ex);
